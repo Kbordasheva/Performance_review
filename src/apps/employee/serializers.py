@@ -1,7 +1,15 @@
 from rest_framework import serializers
 
-from core.serializers import DynamicFieldsSerializer
+from core.serializers import DynamicFieldsSerializer, DynamicFieldsModelSerializer
 from employee.choices import Gender, Seniority
+from employee.models import Skill
+from unit.serializers import UnitSerializer
+
+
+class SkillSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ('id', 'name')
 
 
 class EmployeeSerializer(DynamicFieldsSerializer):
@@ -19,7 +27,8 @@ class EmployeeSerializer(DynamicFieldsSerializer):
     dismiss_date = serializers.DateField(allow_null=True)
     position = serializers.CharField(max_length=254, allow_blank=True)
     seniority = serializers.ChoiceField(choices=Seniority.choices, allow_null=True)
-    # skills =
-    # unit =
+    skills = SkillSerializer(many=True)
+    unit = UnitSerializer()
     is_staff = serializers.BooleanField(read_only=True)
     is_active = serializers.BooleanField(read_only=True)
+
