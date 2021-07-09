@@ -1,0 +1,163 @@
+[
+  {
+    "model": "employee.skill",
+    "pk": 1,
+    "fields": {
+      "name": "Apache HTTP Server"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 2,
+    "fields": {
+      "name": "Apache Subversion"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 3,
+    "fields": {
+      "name": "Apache Tomcat"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 4,
+    "fields": {
+      "name": "Babel"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 5,
+    "fields": {
+      "name": "CircleCI"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 6,
+    "fields": {
+      "name": "Confluence"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 7,
+    "fields": {
+      "name": "Django"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 8,
+    "fields": {
+      "name": "Docker"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 9,
+    "fields": {
+      "name": "Docker Compose"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 10,
+    "fields": {
+      "name": "GitLab"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 11,
+    "fields": {
+      "name": "GlassFish"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 12,
+    "fields": {
+      "name": "Gunicorn"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 13,
+    "fields": {
+      "name": "IBM WebSphere"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 14,
+    "fields": {
+      "name": "IIS"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 15,
+    "fields": {
+      "name": "JBoss"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 16,
+    "fields": {
+      "name": "Jetty"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 17,
+    "fields": {
+      "name": "Kestrel"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 18,
+    "fields": {
+      "name": "Lodash"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 19,
+    "fields": {
+      "name": "Netty"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 20,
+    "fields": {
+      "name": "Node.js"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 21,
+    "fields": {
+      "name": "Phusion Passenger"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 22,
+    "fields": {
+      "name": "Puma"
+    }
+  },
+  {
+    "model": "employee.skill",
+    "pk": 23,
+    "fields": {
+      "name": "Python"
+    }
+  }
+]

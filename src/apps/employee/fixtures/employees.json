@@ -1,0 +1,382 @@
+[
+  {
+    "model": "employee.employee",
+    "pk": 3,
+    "fields": {
+      "first_name": "Andrei",
+      "first_name_ru": "Андрей",
+      "last_name": "Mazur",
+      "last_name_ru": "Мазур",
+      "middle_name_ru": "Алексеевич",
+      "gender": "1",
+      "birth_date": "1992-03-13",
+      "email": "neckart2@indiegogo.com",
+      "phone": "+33 983 692 6279",
+      "employment_date": "2016-07-25",
+      "position": "Software Engineer",
+      "seniority": "beginner",
+      "skills": [1, 2, 3]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 4,
+    "fields": {
+      "first_name": "Alena",
+      "first_name_ru": "Алена",
+      "last_name": "Sychova",
+      "last_name_ru": "Сычева",
+      "middle_name_ru": "Владимировна",
+      "gender": "2",
+      "birth_date": "2001-03-24",
+      "email": "adargavel3@oracle.com",
+      "phone": "+51 252 312 1100",
+      "employment_date": "2016-08-11",
+      "position": "Software Engineer",
+      "seniority": "senior",
+      "skills": [21, 20, 19]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 5,
+    "fields": {
+      "first_name": "Viktoryia",
+      "first_name_ru": "Виктория",
+      "last_name": "Petrova",
+      "last_name_ru": "Петрова",
+      "middle_name_ru": "Ивановна",
+      "gender": "2",
+      "birth_date": "1981-02-27",
+      "email": "soxby4@marketwatch.com",
+      "phone": "+81 593 947 8651",
+      "employment_date": "2016-09-17",
+      "position": "Quality Assurance Engineer",
+      "seniority": "beginner",
+      "skills": [11, 12, 13]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 6,
+    "fields": {
+      "first_name": "Maksim",
+      "first_name_ru": "Максим",
+      "last_name": "Marozau",
+      "last_name_ru": "Морозов",
+      "middle_name_ru": "Сергеевич",
+      "gender": "1",
+      "birth_date": "1990-11-06",
+      "email": "bhearnaman5@furl.net",
+      "phone": "+86 446 748 6448",
+      "employment_date": "2017-02-20",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [7, 2, 16]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 7,
+    "fields": {
+      "first_name": "Dimitry",
+      "first_name_ru": "Дмитрий",
+      "last_name": "Bobrov",
+      "last_name_ru": "Бобров",
+      "middle_name_ru": "Висильевич",
+      "gender": "1",
+      "birth_date": "1987-08-20",
+      "email": "bbrudenell6@symantec.com",
+      "phone": "+355 505 825 0752",
+      "employment_date": "2018-04-13",
+      "position": "Quality Assurance Engineer",
+      "seniority": "senior",
+      "skills": [10, 15, 18]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 8,
+    "fields": {
+      "first_name": "Yuliya",
+      "first_name_ru": "Юлия",
+      "last_name": "Yaskevich",
+      "last_name_ru": "Яскевич",
+      "middle_name_ru": "Валерьевна",
+      "gender": "2",
+      "birth_date": "1998-12-22",
+      "email": "sdenkin7@prweb.com",
+      "phone": "+47 878 628 6217",
+      "employment_date": "2016-10-30",
+      "position": "Quality Assurance Engineer",
+      "seniority": "middle",
+      "skills": [12, 17, 23]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 9,
+    "fields": {
+      "first_name": "Siarhei",
+      "first_name_ru": "Сергей",
+      "last_name": "Ivanou",
+      "last_name_ru": "Иванов",
+      "middle_name_ru": "Борисович",
+      "gender": "1",
+      "birth_date": "1983-04-01",
+      "email": "santram8@twitter.com",
+      "phone": "+7 144 460 4612",
+      "employment_date": "2019-05-31",
+      "position": "Software Engineer",
+      "seniority": "senior",
+      "skills": [23, 19, 13]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 10,
+    "fields": {
+      "first_name": "Kiryl",
+      "first_name_ru": "Кирилл",
+      "last_name": "Sarokin",
+      "last_name_ru": "Cорокин",
+      "middle_name_ru": "Александрович",
+      "gender": "1",
+      "birth_date": "1989-11-09",
+      "email": "ncobon9@goo.ne.jp",
+      "phone": "+48 235 670 9029",
+      "employment_date": "2020-10-10",
+      "position": "Quality Assurance Engineer",
+      "seniority": "junior",
+      "skills": [8, 13, 4]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 11,
+    "fields": {
+      "first_name": "Artur",
+      "first_name_ru": "Артур",
+      "last_name": "Sadko",
+      "last_name_ru": "Садко",
+      "middle_name_ru": "Юрьевич",
+      "gender": "1",
+      "birth_date": "1991-05-13",
+      "email": "ttomovica@thetimes.co.uk",
+      "phone": "+94 620 437 7417",
+      "employment_date": "2019-11-26",
+      "position": "Quality Assurance Engineer",
+      "seniority": "senior",
+      "skills": [5, 14, 13]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 12,
+    "fields": {
+      "first_name": "Oleg",
+      "first_name_ru": "Олег",
+      "last_name": "Ivanov",
+      "last_name_ru": "Иванов",
+      "middle_name_ru": "Юрьевич",
+      "gender": "1",
+      "birth_date": "1990-04-26",
+      "email": "jlambleb@ameblo.jp",
+      "phone": "+86 249 786 3670",
+      "employment_date": "2019-08-30",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [22, 18, 16]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 13,
+    "fields": {
+      "first_name": "Raman",
+      "first_name_ru": "Роман",
+      "last_name": "Kalinin",
+      "last_name_ru": "Калинин",
+      "middle_name_ru": "Денисович",
+      "gender": "1",
+      "birth_date": "1984-11-03",
+      "email": "prysomc@biblegateway.com",
+      "phone": "+27 486 357 8406",
+      "employment_date": "2019-09-04",
+      "position": "Quality Assurance Engineer",
+      "seniority": "middle",
+      "skills": [9, 21, 11]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 14,
+    "fields": {
+      "first_name": "Maryna",
+      "first_name_ru": "Марина",
+      "last_name": "Pakalevich",
+      "last_name_ru": "Пакалевич",
+      "middle_name_ru": "Александровна",
+      "gender": "2",
+      "birth_date": "1983-12-01",
+      "email": "oshatliffd@sbwire.com",
+      "phone": "+7 163 705 9494",
+      "employment_date": "2016-06-22",
+      "position": "Project Manager",
+      "seniority": "middle",
+      "skills": [4, 7, 10]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 15,
+    "fields": {
+      "first_name": "Aliaksandr",
+      "first_name_ru": "Александр",
+      "last_name": "Navumenka",
+      "last_name_ru": "Науменко",
+      "middle_name_ru": "Васильевич",
+      "gender": "1",
+      "birth_date": "1986-11-20",
+      "email": "rtreee@phoca.cz",
+      "phone": "+351 373 943 3270",
+      "employment_date": "2019-06-08",
+      "position": "Quality Engineer",
+      "seniority": "junior",
+      "skills": [17, 21, 23]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 16,
+    "fields": {
+      "first_name": "Ina",
+      "first_name_ru": "Инна",
+      "last_name": "Dyakova",
+      "last_name_ru": "Дьякова",
+      "middle_name_ru": "Витальевна",
+      "gender": "2",
+      "birth_date": "1993-11-21",
+      "email": "livanovf@multiply.com",
+      "phone": "+82 324 765 0640",
+      "employment_date": "2017-03-22",
+      "position": "Software Engineer",
+      "seniority": "senior",
+      "skills": [19, 20, 10]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 17,
+    "fields": {
+      "first_name": "Volha",
+      "first_name_ru": "Ольга",
+      "last_name": "Radzivonava",
+      "last_name_ru": "Родионова",
+      "middle_name_ru": "Андреевна",
+      "gender": "2",
+      "birth_date": "1993-10-08",
+      "email": "cliddallg@cnbc.com",
+      "phone": "+389 148 860 2065",
+      "employment_date": "2020-09-16",
+      "position": "Software Engineer",
+      "seniority": "beginner",
+      "skills": [11, 22, 23]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 18,
+    "fields": {
+      "first_name": "Vitali",
+      "first_name_ru": "Виталий",
+      "last_name": "Zinevich",
+      "last_name_ru": "Зиневич",
+      "middle_name_ru": "Дмитриевич",
+      "gender": "1",
+      "birth_date": "1996-04-13",
+      "email": "jwhittlesh@moonfruit.com",
+      "phone": "+375 741 667 3171",
+      "employment_date": "2021-01-06",
+      "position": "Project Manager",
+      "seniority": "middle",
+      "skills": [8, 12, 14]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 19,
+    "fields": {
+      "first_name": "Artsiom",
+      "first_name_ru": "Артём",
+      "last_name": "Kitsin",
+      "last_name_ru": "Китин",
+      "middle_name_ru": "Владимирович",
+      "gender": "1",
+      "birth_date": "1985-07-28",
+      "email": "hnorcrossi@reference.com",
+      "phone": "+389 802 498 3880",
+      "employment_date": "2021-03-14",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [12, 13]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 20,
+    "fields": {
+      "first_name": "Siarhei",
+      "first_name_ru": "Сергей",
+      "last_name": "Pankov",
+      "last_name_ru": "Панков",
+      "middle_name_ru": "Александрович",
+      "gender": "1",
+      "birth_date": "1987-09-29",
+      "email": "ldenv7rj@booking.com",
+      "phone": "+420 867 763 9974",
+      "employment_date": "2017-02-19",
+      "position": "Project Manager",
+      "seniority": "senior",
+      "skills": [8, 7, 23]
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 21,
+    "fields": {
+      "first_name": "Siarhei",
+      "first_name_ru": "Сергей",
+      "last_name": "Kabzar",
+      "last_name_ru": "Кобзарь",
+      "middle_name_ru": "Юрьевич",
+      "gender": "1",
+      "birth_date": "1987-09-29",
+      "email": "ld12verj@booking.com",
+      "phone": "+44 867 763 9974",
+      "employment_date": "2016-02-19",
+      "position": "Unit Manager",
+      "seniority": "senior",
+      "skills": []
+    }
+  },
+   {
+    "model": "employee.employee",
+    "pk": 22,
+    "fields": {
+      "first_name": "Anastasiya",
+      "first_name_ru": "Анастасия",
+      "last_name": "Volchek",
+      "last_name_ru": "Волчек",
+      "middle_name_ru": "Александровна",
+      "gender": "2",
+      "birth_date": "1988-10-20",
+      "email": "ldvrrj@boodfeg.com",
+      "phone": "+44 867 1111 9974",
+      "employment_date": "2019-01-18",
+      "position": "Unit Manager",
+      "seniority": "senior",
+      "skills": []
+    }
+  }
+]

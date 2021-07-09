@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "PerformanceReview"
+version = "0.1.0"
+description = ""
+authors = ["Kate Bardashava <artemissa.ks@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django-environ = "^0.4.5"
+psycopg2 = "^2.9.1"
+ipython = "^7.25.0"
+
+[tool.poetry.dev-dependencies]
+django-debug-toolbar = "^3.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

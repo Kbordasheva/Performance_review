@@ -1,0 +1,18 @@
+[
+  {
+    "model": "unit.unit",
+    "pk": 1,
+    "fields": {
+      "name": "U1",
+      "manager": 21
+    }
+  },
+  {
+    "model": "unit.unit",
+    "pk": 2,
+    "fields": {
+      "name": "U2",
+      "manager": 22
+    }
+  }
+]

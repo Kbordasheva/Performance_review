@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: performance_user
+      POSTGRES_PASSWORD: performance_password
+      POSTGRES_DB: performance-review
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data/
+
+volumes:
+  project-data:
