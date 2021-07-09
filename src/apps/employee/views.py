@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import mixins, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
@@ -6,6 +8,8 @@ from core.exceptions import ServiceException
 from employee.models import Employee
 from employee.serializers import EmployeeSerializer, EmployeeListSerializer
 from employee.services.create_employee_service import CreateEmployeeService
+
+logger = logging.getLogger('project')
 
 
 class BaseEmployeeView(GenericAPIView):
@@ -42,12 +46,10 @@ class EmployeesListCreateView(mixins.ListModelMixin,
             ),
         )
         if not serializer.is_valid():
-            pass
-            # ToDo: add logger
-            # logger.error(
-            #     f'Validation error on a new employee creation. '
-            #     f'Reason: {serializer.errors}'
-            # )
+            logger.error(
+                f'Validation error on a new employee creation. '
+                f'Reason: {serializer.errors}'
+            )
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         service = CreateEmployeeService(**serializer.validated_data)
@@ -55,8 +57,7 @@ class EmployeesListCreateView(mixins.ListModelMixin,
         try:
             service.perform()
         except ServiceException as e:
-            pass
-            # logger.error(f'Cannot create relocation request. Reason: {e}')
+            logger.error(f'Cannot create relocation request. Reason: {e}')
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(service.instance)
