@@ -62,9 +62,9 @@ class Criteria(TimeStampedModel):
             'Designates whether the criteria should be treated as completed'
         ),
     )
-    start_date = models.DateField(_('Start Date'), null=True)
-    deadline = models.DateField(_('Deadline'), null=True)
-    finish_date = models.DateField(_('Finish Date'), null=True)
+    start_date = models.DateField(_('Start Date'), null=True, blank=True)
+    deadline = models.DateField(_('Deadline'), null=True, blank=True)
+    finish_date = models.DateField(_('Finish Date'), null=True, blank=True)
 
 
 class Comment(TimeStampedModel):

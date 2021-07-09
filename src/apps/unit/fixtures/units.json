@@ -3,16 +3,14 @@
     "model": "unit.unit",
     "pk": 1,
     "fields": {
-      "name": "U1",
-      "manager": 21
+      "name": "U1"
     }
   },
   {
     "model": "unit.unit",
     "pk": 2,
     "fields": {
-      "name": "U2",
-      "manager": 22
+      "name": "U2"
     }
   }
 ]

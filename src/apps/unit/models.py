@@ -13,3 +13,6 @@ class Unit(models.Model):
         on_delete=models.PROTECT,
         null=True
     )
+
+    def __str__(self) -> str:
+        return self.name

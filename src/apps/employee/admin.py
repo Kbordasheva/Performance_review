@@ -4,7 +4,7 @@ from employee.models import Employee, Skill
 
 
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'position', 'seniority', 'birth_date', )
+    list_display = ('id', 'full_name', 'unit', 'position', 'seniority', 'birth_date', )
     fields = ('first_name',
               'first_name_ru',
               'last_name',
@@ -20,7 +20,8 @@ class EmployeeAdmin(admin.ModelAdmin):
               'seniority',
               'is_staff',
               'is_active',
-              'skills'
+              'skills',
+              'unit'
               )
 
 
