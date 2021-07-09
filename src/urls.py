@@ -19,6 +19,7 @@ from django.urls import path, include
 api_v1_urlpatterns: list[path] = [
     # path('auth/', include(('auth.urls', 'auth'), namespace='project_auth')),
     path('employees/', include(('employee.urls', 'employee'), namespace='employee')),
+    path('reviews/', include(('performance_review.urls', 'performance_review'), namespace='performance_review')),
     ]
 
 urlpatterns = [

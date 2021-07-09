@@ -14,6 +14,7 @@ class SkillSerializer(DynamicFieldsModelSerializer):
 
 class EmployeeSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
+    full_name = serializers.CharField(read_only=True)
     first_name = serializers.CharField(max_length=200, allow_blank=True)
     first_name_ru = serializers.CharField(max_length=200, allow_blank=True)
     last_name = serializers.CharField(max_length=200, allow_blank=True)
