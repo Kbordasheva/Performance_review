@@ -17,10 +17,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
+from employee.views import CustomAuthToken, LogoutView
 from src.global_constants import LOCAL_ENV
 
 api_v1_urlpatterns: list[path] = [
-    # path('auth/', include(('auth.urls', 'auth'), namespace='project_auth')),
+    path('login/', CustomAuthToken.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('employees/', include(('employee.urls', 'employee'), namespace='employee')),
     path('reviews/', include(('performance_review.urls', 'performance_review'), namespace='performance_review')),
     ]
