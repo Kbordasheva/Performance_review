@@ -29,6 +29,9 @@ class PerformanceReview(models.Model):
         null=True
     )
 
+    def __str__(self) -> str:
+        return f'PR of {self.employee.full_name} - {self.year}'
+
 
 class Goal(TimeStampedModel):
     review = models.ForeignKey(
@@ -45,6 +48,9 @@ class Goal(TimeStampedModel):
             'Designates whether the goal should be treated as completed'
         ),
     )
+
+    def __str__(self) -> str:
+        return f'Goal {self.id} of {self.review.employee.full_name} - {self.review.year}'
 
 
 class Criteria(TimeStampedModel):
@@ -65,6 +71,11 @@ class Criteria(TimeStampedModel):
     start_date = models.DateField(_('Start Date'), null=True, blank=True)
     deadline = models.DateField(_('Deadline'), null=True, blank=True)
     finish_date = models.DateField(_('Finish Date'), null=True, blank=True)
+
+    def __str__(self) -> str:
+        return f'Criteria of goal id {self.goal.id} - ' \
+               f'{self.goal.review.employee.full_name} - ' \
+               f'{self.goal.review.year}'
 
 
 class Comment(TimeStampedModel):

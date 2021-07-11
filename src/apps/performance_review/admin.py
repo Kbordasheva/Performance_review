@@ -71,6 +71,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'author', 'text', 'created_at', 'updated_at')
     fields = ('author',
               'text',
+              'goal',
               'created_at',
               'updated_at',
               )

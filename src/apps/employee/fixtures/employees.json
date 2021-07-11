@@ -396,5 +396,105 @@
       "seniority": "senior",
       "skills": []
     }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 23,
+    "fields": {
+      "first_name": "Maxim",
+      "first_name_ru": "Максим",
+      "last_name": "Volodin",
+      "last_name_ru": "Володин",
+      "middle_name_ru": "Егорович",
+      "gender": "1",
+      "birth_date": "1988-08-28",
+      "email": "hhbfhjger@reference.com",
+      "phone": "+312 802 498 3880",
+      "employment_date": "2021-02-14",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [11, 15],
+      "unit": 1
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 24,
+    "fields": {
+      "first_name": "Andrei",
+      "first_name_ru": "Андрей",
+      "last_name": "Zhukov",
+      "last_name_ru": "Жуков",
+      "middle_name_ru": "Евгеньевич",
+      "gender": "1",
+      "birth_date": "1990-08-01",
+      "email": "h12hjger@reference.com",
+      "phone": "+312 821 498 3880",
+      "employment_date": "2020-02-01",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [10, 22],
+      "unit": 1
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 25,
+    "fields": {
+      "first_name": "Vasiliy",
+      "first_name_ru": "Висилий",
+      "last_name": "Andropov",
+      "last_name_ru": "Андропов",
+      "middle_name_ru": "Иванович",
+      "gender": "1",
+      "birth_date": "1995-08-01",
+      "email": "jbrjhgfbjer@reference.com",
+      "phone": "+312 821 498 777",
+      "employment_date": "2021-03-01",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [11, 22],
+      "unit": 1
+    }
+  },
+   {
+    "model": "employee.employee",
+    "pk": 26,
+    "fields": {
+      "first_name": "Filip",
+      "first_name_ru": "Филипп",
+      "last_name": "Chernih",
+      "last_name_ru": "Черных",
+      "middle_name_ru": "Александрович",
+      "gender": "1",
+      "birth_date": "1992-05-05",
+      "email": "jpojer@reference.com",
+      "phone": "+312 821 498 777",
+      "employment_date": "2021-04-04",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [1, 2],
+      "unit": 1
+    }
+  },
+  {
+    "model": "employee.employee",
+    "pk": 27,
+    "fields": {
+      "first_name": "Ilia",
+      "first_name_ru": "Илья",
+      "last_name": "Kaz",
+      "last_name_ru": "Кац",
+      "middle_name_ru": "Сергеевич",
+      "gender": "1",
+      "birth_date": "1987-11-11",
+      "email": "jehjojer@reference.com",
+      "phone": "+312 821 498 777",
+      "employment_date": "2019-04-04",
+      "position": "Software Engineer",
+      "seniority": "middle",
+      "skills": [4, 2],
+      "unit": 1
+    }
   }
 ]

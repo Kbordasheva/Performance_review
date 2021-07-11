@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from core.serializers import DynamicFieldsSerializer
-from employee.serializers import EmployeeSerializer
+from employee.serializers import EmployeeSerializer, EmployeeListSerializer
 
 
 class CommentSerializer(DynamicFieldsSerializer):
@@ -35,13 +35,17 @@ class GoalSerializer(DynamicFieldsSerializer):
 
 class PerformanceReviewSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
-    employee = EmployeeSerializer(
-        fields=('id', 'full_name'),
-        ref_name='PerformanceReviewForEmployeeProfileSerializer',
-        read_only=True,
-    )
+    employee = EmployeeListSerializer()
     year = serializers.IntegerField(min_value=2000, max_value=2050)
-    goals = GoalSerializer(many=True)
+    goals_count = serializers.SerializerMethodField()
+    goals_done_count = serializers.SerializerMethodField()
+
+    def get_goals_count(self, performance_review):
+        return performance_review.goals.count()
+
+    def get_goals_done_count(self, performance_review):
+        return performance_review.goals.filter(is_done=True).count()
+
 
 
 
