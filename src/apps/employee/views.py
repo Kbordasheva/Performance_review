@@ -12,6 +12,7 @@ from core.exceptions import ServiceException
 from employee.models import Employee
 from employee.serializers import EmployeeSerializer, EmployeeListSerializer
 from employee.services.create_employee_service import CreateEmployeeService
+from employee.services.update_employee_service import SaveEmployeeService
 
 logger = logging.getLogger('project')
 
@@ -92,3 +93,57 @@ class EmployeesListCreateView(mixins.ListModelMixin,
         serializer = self.get_serializer(service.instance)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class EmployeeView(GenericAPIView, mixins.RetrieveModelMixin):
+    lookup_url_kwarg = 'employee_id'
+    serializer_class = EmployeeSerializer
+
+    def get_queryset(self):
+        queryset = Employee.objects \
+            .select_related('unit').prefetch_related('skills')
+
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        serializer = self.get_serializer(instance, data=request.data)
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Employee profile update. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        employee_data = {}
+        for key in (
+                'first_name',
+                'first_name_ru',
+                'last_name',
+                'last_name_ru',
+                'middle_name_ru',
+                'gender',
+                'birth_date',
+                'email',
+                'phone',
+                'employment_date',
+                'dismiss_date',
+                'position',
+                'seniority',
+                'unit_id'):
+            employee_data[key] = serializer.validated_data.get(key, getattr(instance, key))
+        employee_data['skills_ids'] = serializer.validated_data.get('skills_ids')
+
+        service = SaveEmployeeService(instance, **employee_data)
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot save details for employee ID {instance.id}. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        return Response(serializer.data)

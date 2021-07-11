@@ -21,28 +21,33 @@ class EmployeeListSerializer(DynamicFieldsSerializer):
     position = serializers.CharField(max_length=254, allow_blank=True)
     seniority = serializers.ChoiceField(choices=Seniority.choices, allow_null=True)
     skills = SkillSerializer(many=True)
-
     email = serializers.EmailField(max_length=200, allow_null=True)
 
 
 class EmployeeSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
-    full_name = serializers.CharField(read_only=True)
-    first_name = serializers.CharField(max_length=200, allow_blank=True)
-    first_name_ru = serializers.CharField(max_length=200, allow_blank=True)
-    last_name = serializers.CharField(max_length=200, allow_blank=True)
-    last_name_ru = serializers.CharField(max_length=200, allow_blank=True)
-    middle_name_ru = serializers.CharField(max_length=200, allow_blank=True)
-    gender = serializers.ChoiceField(choices=Gender.choices, allow_null=True)
-    birth_date = serializers.DateField(allow_null=True, read_only=True)
-    email = serializers.EmailField(max_length=200, allow_null=True)
-    phone = serializers.CharField(max_length=100, allow_blank=True)
-    employment_date = serializers.DateField(allow_null=True)
-    dismiss_date = serializers.DateField(allow_null=True)
-    position = serializers.CharField(max_length=254, allow_blank=True)
-    seniority = serializers.ChoiceField(choices=Seniority.choices, allow_null=True)
-    skills = SkillSerializer(many=True)
-    unit = UnitSerializer()
-    is_staff = serializers.BooleanField(read_only=True)
-    is_active = serializers.BooleanField(read_only=True)
-
+    full_name = serializers.CharField(read_only=True, required=False)
+    first_name = serializers.CharField(max_length=200, allow_blank=True, required=False)
+    first_name_ru = serializers.CharField(max_length=200, allow_blank=True, required=False)
+    last_name = serializers.CharField(max_length=200, allow_blank=True, required=False)
+    last_name_ru = serializers.CharField(max_length=200, allow_blank=True, required=False)
+    middle_name_ru = serializers.CharField(max_length=200, allow_blank=True, required=False)
+    gender = serializers.ChoiceField(choices=Gender.choices, allow_null=True, required=False)
+    birth_date = serializers.DateField(allow_null=True, read_only=True, required=False)
+    email = serializers.EmailField(max_length=200, allow_null=True, required=False)
+    phone = serializers.CharField(max_length=100, allow_blank=True, required=False)
+    employment_date = serializers.DateField(allow_null=True, required=False)
+    dismiss_date = serializers.DateField(allow_null=True, required=False)
+    position = serializers.CharField(max_length=254, allow_blank=True, required=False)
+    seniority = serializers.ChoiceField(choices=Seniority.choices, allow_null=True, required=False)
+    skills = SkillSerializer(many=True, required=False)
+    skills_ids = serializers.ListField(
+        child=serializers.IntegerField(min_value=1),
+        max_length=100,
+        allow_empty=True,
+        write_only=True,
+    )
+    unit = UnitSerializer(required=False)
+    unit_id = serializers.IntegerField(write_only=True, required=False)
+    is_staff = serializers.BooleanField(read_only=True, required=False)
+    is_active = serializers.BooleanField(read_only=True, required=False)
