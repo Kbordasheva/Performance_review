@@ -45,15 +45,11 @@ class LogoutView(APIView):
         return Response()
 
 
-class BaseEmployeeView(GenericAPIView):
-    serializer_class = EmployeeSerializer
-    queryset = Employee.objects.all()
-
-
 class EmployeesListCreateView(mixins.ListModelMixin,
                               mixins.CreateModelMixin,
-                              BaseEmployeeView):
+                              GenericAPIView):
     serializer_class = EmployeeListSerializer
+    queryset = Employee.objects.filter(is_staff=False)
 
     ordering_fields = (
         ('id', 'id'),
