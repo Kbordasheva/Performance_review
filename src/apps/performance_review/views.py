@@ -31,7 +31,8 @@ class PerformanceReviewListCreateView(mixins.ListModelMixin,
             'id',
             'employee',
             'year',
-            'goals',
+            'goals_count',
+            'goals_done_count'
         )
 
         page = self.paginate_queryset(queryset)

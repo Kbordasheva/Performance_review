@@ -19,6 +19,8 @@ class EmployeeListSerializer(DynamicFieldsSerializer):
     full_name = serializers.CharField(read_only=True)
     unit = UnitSerializer()
     position = serializers.CharField(max_length=254, allow_blank=True)
+    seniority = serializers.ChoiceField(choices=Seniority.choices, allow_null=True)
+    skills = SkillSerializer(many=True)
 
     email = serializers.EmailField(max_length=200, allow_null=True)
 
