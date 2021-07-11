@@ -26,13 +26,16 @@ class CustomAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
+            'employee': {
+                'id': user.pk,
+                'name': user.full_name,
+                'email': user.email
+            }
         })
 
 
 class LogoutView(APIView):
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = None
 
     def post(self, request):
@@ -57,7 +60,7 @@ class EmployeesListCreateView(mixins.ListModelMixin,
         ('firstName', 'first_name'),
         ('lastName', 'last_name'),
     )
-    ordering = ('id', )
+    ordering = ('id',)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
