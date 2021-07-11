@@ -14,8 +14,12 @@ class SkillSerializer(DynamicFieldsModelSerializer):
 
 class EmployeeListSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
-    first_name = serializers.CharField(max_length=200, allow_blank=True)
-    last_name = serializers.CharField(max_length=200, allow_blank=True)
+    first_name = serializers.CharField(max_length=200, allow_blank=True, write_only=True)
+    last_name = serializers.CharField(max_length=200, allow_blank=True, write_only=True)
+    full_name = serializers.CharField(read_only=True)
+    unit = UnitSerializer()
+    position = serializers.CharField(max_length=254, allow_blank=True)
+
     email = serializers.EmailField(max_length=200, allow_null=True)
 
 
