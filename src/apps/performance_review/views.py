@@ -3,10 +3,13 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from performance_review.models import PerformanceReview
-from performance_review.serializers import PerformanceReviewSerializer
+from performance_review.serializers import PerformanceReviewSerializer, PerformanceReviewDetailsSerializer
 
 
-class BasePerformanceReviewView(GenericAPIView):
+class PerformanceReviewListCreateView(mixins.ListModelMixin,
+                                      mixins.CreateModelMixin,
+                                      GenericAPIView
+                                      ):
     serializer_class = PerformanceReviewSerializer
 
     def get_queryset(self):
@@ -16,13 +19,6 @@ class BasePerformanceReviewView(GenericAPIView):
             )
 
         return queryset
-
-
-class PerformanceReviewListCreateView(mixins.ListModelMixin,
-                                      mixins.CreateModelMixin,
-                                      BasePerformanceReviewView
-                                      ):
-    serializer_class = PerformanceReviewSerializer
 
     def get(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -42,3 +38,20 @@ class PerformanceReviewListCreateView(mixins.ListModelMixin,
 
         serializer = self.get_serializer(queryset, fields=serializer_fields, many=True)
         return Response(serializer.data)
+
+
+class PerformanceReviewDetailsView(mixins.RetrieveModelMixin, GenericAPIView):
+    serializer_class = PerformanceReviewDetailsSerializer
+    lookup_url_kwarg = 'profile_id'
+
+    def get_queryset(self):
+        queryset = PerformanceReview.objects \
+            .select_related(
+                'employee',
+                'employee__unit',
+            )
+
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)

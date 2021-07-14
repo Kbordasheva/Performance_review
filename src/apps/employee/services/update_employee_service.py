@@ -18,7 +18,6 @@ class SaveEmployeeService(BaseService):
             dismiss_date,
             position,
             seniority,
-            skills_ids,
             unit_id
     ):
         self.instance = instance
@@ -35,7 +34,6 @@ class SaveEmployeeService(BaseService):
         self.dismiss_date = dismiss_date
         self.position = position
         self.seniority = seniority
-        self.skills_ids = skills_ids or list()
         self.unit_id = unit_id
 
     def perform(self) -> bool:
@@ -57,7 +55,5 @@ class SaveEmployeeService(BaseService):
         self.instance.position = self.position
         self.instance.seniority = self.seniority
         self.instance.unit_id = self.unit_id
-
-        self.instance.skills.set(self.skills_ids, clear=True)
 
         self.instance.save()

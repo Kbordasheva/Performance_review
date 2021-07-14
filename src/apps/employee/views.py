@@ -3,15 +3,17 @@ import logging
 from rest_framework import mixins, status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.exceptions import ServiceException
-from employee.models import Employee
-from employee.serializers import EmployeeSerializer, EmployeeListSerializer
+from core.pagination import UnlimitedOffsetPagination
+from employee.models import Employee, Skill
+from employee.serializers import EmployeeSerializer, EmployeeListSerializer, SkillSerializer, SkillsUpdateSerializer
 from employee.services.create_employee_service import CreateEmployeeService
+from employee.services.save_employee_skills_service import SaveEmployeeSkillsService
 from employee.services.update_employee_service import SaveEmployeeService
 
 logger = logging.getLogger('project')
@@ -136,7 +138,6 @@ class EmployeeView(GenericAPIView, mixins.RetrieveModelMixin):
                 'seniority',
                 'unit_id'):
             employee_data[key] = serializer.validated_data.get(key, getattr(instance, key))
-        employee_data['skills_ids'] = serializer.validated_data.get('skills_ids')
 
         service = SaveEmployeeService(instance, **employee_data)
         try:
@@ -147,3 +148,51 @@ class EmployeeView(GenericAPIView, mixins.RetrieveModelMixin):
 
         serializer = self.get_serializer(service.instance)
         return Response(serializer.data)
+
+
+class SkillView(ListCreateAPIView):
+    pagination_class = UnlimitedOffsetPagination
+    serializer_class = SkillSerializer
+    queryset = Skill.objects.all()
+
+    ordering_fields = (
+        ('id', 'id'),
+    )
+    ordering = ('id',)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class EmployeeSkillsUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+    serializer_class = SkillsUpdateSerializer
+    lookup_url_kwarg = 'employee_id'
+    queryset = Employee.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        """
+        Add skills by IDs to the Employee.
+        """
+        instance = self.get_object()
+
+        serializer = self.get_serializer(instance, data=request.data)
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Employee Skills update. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = SaveEmployeeSkillsService(
+            instance=instance,
+            **serializer.validated_data,
+        )
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot update skills for Employee ID {instance.id}. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(service.skills)
+
+

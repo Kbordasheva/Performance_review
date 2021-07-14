@@ -12,6 +12,16 @@ class SkillSerializer(DynamicFieldsModelSerializer):
         fields = ('id', 'name')
 
 
+class SkillsUpdateSerializer(DynamicFieldsSerializer):
+    skills = serializers.ListField(
+        child=serializers.IntegerField(min_value=1),
+        max_length=100,
+        allow_empty=True,
+        default=list,
+        write_only=True
+    )
+
+
 class EmployeeListSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
     first_name = serializers.CharField(max_length=200, allow_blank=True, write_only=True)
@@ -27,6 +37,7 @@ class EmployeeListSerializer(DynamicFieldsSerializer):
 class EmployeeSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
     full_name = serializers.CharField(read_only=True, required=False)
+    full_name_ru = serializers.CharField(read_only=True, required=False)
     first_name = serializers.CharField(max_length=200, allow_blank=True, required=False)
     first_name_ru = serializers.CharField(max_length=200, allow_blank=True, required=False)
     last_name = serializers.CharField(max_length=200, allow_blank=True, required=False)
@@ -41,13 +52,7 @@ class EmployeeSerializer(DynamicFieldsSerializer):
     position = serializers.CharField(max_length=254, allow_blank=True, required=False)
     seniority = serializers.ChoiceField(choices=Seniority.choices, allow_null=True, required=False)
     skills = SkillSerializer(many=True, required=False)
-    skills_ids = serializers.ListField(
-        child=serializers.IntegerField(min_value=1),
-        max_length=100,
-        allow_empty=True,
-        write_only=True,
-    )
-    unit = UnitSerializer(required=False)
+    unit = UnitSerializer(required=False, read_only=True)
     unit_id = serializers.IntegerField(write_only=True, required=False)
     is_staff = serializers.BooleanField(read_only=True, required=False)
     is_active = serializers.BooleanField(read_only=True, required=False)

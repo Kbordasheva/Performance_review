@@ -47,5 +47,8 @@ class PerformanceReviewSerializer(DynamicFieldsSerializer):
         return performance_review.goals.filter(is_done=True).count()
 
 
-
-
+class PerformanceReviewDetailsSerializer(DynamicFieldsSerializer):
+    id = serializers.IntegerField(read_only=True)
+    employee = EmployeeSerializer()
+    year = serializers.IntegerField(min_value=2000, max_value=2050)
+    goals = GoalSerializer(many=True)
