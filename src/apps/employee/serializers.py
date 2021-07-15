@@ -32,6 +32,18 @@ class EmployeeListSerializer(DynamicFieldsSerializer):
     seniority = serializers.ChoiceField(choices=Seniority.choices, allow_null=True)
     skills = SkillSerializer(many=True)
     email = serializers.EmailField(max_length=200, allow_null=True)
+    goals_count = serializers.SerializerMethodField()
+    goals_done_count = serializers.SerializerMethodField()
+
+    def get_goals_count(self, employee):
+        if employee.current_review:
+            return employee.current_review.goals.count()
+        return ''
+
+    def get_goals_done_count(self, employee):
+        if employee.current_review:
+            return employee.current_review.goals.filter(is_done=True).count()
+        return ''
 
 
 class EmployeeSerializer(DynamicFieldsSerializer):

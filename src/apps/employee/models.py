@@ -100,6 +100,10 @@ class Employee(AbstractBaseUser, PermissionsMixin):
             f'{self.last_name_ru}'
         )
 
+    @property
+    def current_review(self):
+        return self.review.order_by('-year').first()
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)

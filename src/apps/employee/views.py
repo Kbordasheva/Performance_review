@@ -11,10 +11,16 @@ from rest_framework.views import APIView
 from core.exceptions import ServiceException
 from core.pagination import UnlimitedOffsetPagination
 from employee.models import Employee, Skill
-from employee.serializers import EmployeeSerializer, EmployeeListSerializer, SkillSerializer, SkillsUpdateSerializer
+from employee.serializers import (
+    EmployeeSerializer,
+    EmployeeListSerializer,
+    SkillSerializer,
+    SkillsUpdateSerializer,
+)
 from employee.services.create_employee_service import CreateEmployeeService
 from employee.services.save_employee_skills_service import SaveEmployeeSkillsService
 from employee.services.update_employee_service import SaveEmployeeService
+from performance_review.serializers import EmployeeProfileSerializer
 
 logger = logging.getLogger('project')
 
@@ -196,3 +202,14 @@ class EmployeeSkillsUpdateView(mixins.UpdateModelMixin, GenericAPIView):
         return Response(service.skills)
 
 
+class EmployeeProfile(mixins.RetrieveModelMixin, GenericAPIView):
+    serializer_class = EmployeeProfileSerializer
+    lookup_url_kwarg = 'employee_id'
+
+    def get_queryset(self):
+        queryset = Employee.objects.select_related('unit').prefetch_related('skills')
+
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
