@@ -1,9 +1,17 @@
-from rest_framework import mixins
-from rest_framework.generics import GenericAPIView
+import logging
+
+from rest_framework import mixins, status
+from rest_framework.generics import GenericAPIView, CreateAPIView, get_object_or_404
 from rest_framework.response import Response
 
-from performance_review.models import PerformanceReview
-from performance_review.serializers import PerformanceReviewSerializer, PerformanceReviewDetailsSerializer
+from core.exceptions import ServiceException
+from performance_review.models import PerformanceReview, Goal
+from performance_review.serializers import PerformanceReviewSerializer, PerformanceReviewDetailsSerializer, \
+    GoalSerializer
+from performance_review.services.create_goal_service import CreateGoalService
+from performance_review.services.update_goal_service import UpdateGoalService
+
+logger = logging.getLogger('project')
 
 
 class PerformanceReviewListCreateView(mixins.ListModelMixin,
@@ -15,8 +23,8 @@ class PerformanceReviewListCreateView(mixins.ListModelMixin,
     def get_queryset(self):
         queryset = PerformanceReview.objects \
             .select_related(
-                'employee',
-            )
+            'employee',
+        )
 
         return queryset
 
@@ -47,11 +55,74 @@ class PerformanceReviewDetailsView(mixins.RetrieveModelMixin, GenericAPIView):
     def get_queryset(self):
         queryset = PerformanceReview.objects \
             .select_related(
-                'employee',
-                'employee__unit',
-            )
+            'employee',
+            'employee__unit',
+        )
 
         return queryset
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
+
+
+class GoalCreateView(CreateAPIView):
+    serializer_class = GoalSerializer
+    queryset = Goal.objects.all()
+
+    def get_queryset(self):
+        queryset = PerformanceReview.objects.select_related('employee')
+
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        queryset = self.get_queryset()
+        review = get_object_or_404(queryset, id=self.kwargs['profile_id'])
+
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Goal create. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = CreateGoalService(review_id=review.id,
+                                    **serializer.validated_data)
+
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot create Goal for review ID {review.id}. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class GoalUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+    serializer_class = GoalSerializer
+    queryset = Goal.objects.all()
+    lookup_url_kwarg = 'goal_id'
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Goal ID {instance.id} update. '
+                f'Reason: {serializer.errors}'
+
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = UpdateGoalService(instance, **serializer.validated_data)
+
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot save Goal. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        return Response(serializer.data)

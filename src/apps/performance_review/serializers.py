@@ -26,8 +26,8 @@ class GoalSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
     text = serializers.CharField(max_length=1000)
     is_done = serializers.BooleanField()
-    criteria = CriteriaSerializer(many=True)
-    comments = CommentSerializer(many=True)
+    criteria = CriteriaSerializer(many=True, read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
 
 
 class PerformanceReviewSerializer(DynamicFieldsSerializer):
