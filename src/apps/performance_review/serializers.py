@@ -6,11 +6,8 @@ from employee.serializers import EmployeeListSerializer, EmployeeSerializer
 
 class CommentSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
-    author = EmployeeSerializer(
-        fields=('id', 'full_name'),
-        ref_name='CommentForEmployeeProfileSerializer',
-        read_only=True,
-    )
+    author_id = serializers.IntegerField(source="author.id", read_only=True)
+    author = serializers.CharField(read_only=True)
     text = serializers.CharField(max_length=1000)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
