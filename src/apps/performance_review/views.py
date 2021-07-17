@@ -1,14 +1,16 @@
 import logging
 
 from rest_framework import mixins, status
-from rest_framework.generics import GenericAPIView, CreateAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView, CreateAPIView, get_object_or_404, ListCreateAPIView
 from rest_framework.response import Response
 
 from core.exceptions import ServiceException
-from performance_review.models import PerformanceReview, Goal
+from performance_review.models import PerformanceReview, Goal, Comment
 from performance_review.serializers import PerformanceReviewSerializer, PerformanceReviewDetailsSerializer, \
-    GoalSerializer
+    GoalSerializer, CommentSerializer
+from performance_review.services.create_comment_service import CreateCommentService
 from performance_review.services.create_goal_service import CreateGoalService
+from performance_review.services.update_comment_service import UpdateCommentService
 from performance_review.services.update_goal_service import UpdateGoalService
 
 logger = logging.getLogger('project')
@@ -122,6 +124,72 @@ class GoalUpdateView(mixins.UpdateModelMixin, GenericAPIView):
             service.perform()
         except ServiceException as e:
             logger.error(f'Cannot save Goal. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        return Response(serializer.data)
+
+
+class CommentCreateView(CreateAPIView):
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.select_related('author', )
+
+    def get_queryset(self):
+        queryset = Goal.objects.select_related('review')
+
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        """
+        Create a new comment.
+        """
+        serializer = self.get_serializer(data=request.data)
+        queryset = self.get_queryset()
+        goal = get_object_or_404(queryset, id=self.kwargs['goal_id'])
+
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on comment save. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = CreateCommentService(
+            goal_id=goal.id,
+            author=request.user,
+            **serializer.validated_data,
+        )
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot save comment. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class CommentUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
+    lookup_url_kwarg = 'comment_id'
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Comment ID {instance.id} update. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = UpdateCommentService(instance, **serializer.validated_data)
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot save Comment ID {instance.id}. Reason: {e}')
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(service.instance)
