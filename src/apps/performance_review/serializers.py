@@ -17,9 +17,9 @@ class CriteriaSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
     text = serializers.CharField(max_length=1000)
     is_done = serializers.BooleanField()
-    start_date = serializers.DateField(allow_null=True)
-    deadline = serializers.DateField(allow_null=True)
-    finish_date = serializers.DateField(allow_null=True)
+    start_date = serializers.DateField(allow_null=True, required=False)
+    deadline = serializers.DateField(allow_null=True, required=False)
+    finish_date = serializers.DateField(allow_null=True, required=False)
 
 
 class GoalSerializer(DynamicFieldsSerializer):

@@ -5,7 +5,7 @@ from performance_review.views import (
     PerformanceReviewDetailsView,
     GoalCreateView,
     GoalUpdateView,
-    CommentCreateView, CommentUpdateView,
+    CommentCreateView, CommentUpdateView, CriteriaCreateView, CriteriaUpdateView,
 )
 
 urlpatterns = [
@@ -21,4 +21,10 @@ urlpatterns = [
     path('<int:profile_id>/goals/<int:goal_id>/comments/<int:comment_id>/',
          CommentUpdateView.as_view(),
          name='comment'),
+    path('<int:profile_id>/goals/<int:goal_id>/criteria/',
+         CriteriaCreateView.as_view(),
+         name='criteria-all'),
+    path('<int:profile_id>/goals/<int:goal_id>/criteria/<int:criteria_id>/',
+         CriteriaUpdateView.as_view(),
+         name='criteria'),
     ]

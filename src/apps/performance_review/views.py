@@ -5,12 +5,14 @@ from rest_framework.generics import GenericAPIView, CreateAPIView, get_object_or
 from rest_framework.response import Response
 
 from core.exceptions import ServiceException
-from performance_review.models import PerformanceReview, Goal, Comment
+from performance_review.models import PerformanceReview, Goal, Comment, Criteria
 from performance_review.serializers import PerformanceReviewSerializer, PerformanceReviewDetailsSerializer, \
-    GoalSerializer, CommentSerializer
+    GoalSerializer, CommentSerializer, CriteriaSerializer
 from performance_review.services.create_comment_service import CreateCommentService
+from performance_review.services.create_criteria_service import CreateCriteriaService
 from performance_review.services.create_goal_service import CreateGoalService
 from performance_review.services.update_comment_service import UpdateCommentService
+from performance_review.services.update_criteria_service import UpdateCriteriaService
 from performance_review.services.update_goal_service import UpdateGoalService
 
 logger = logging.getLogger('project')
@@ -190,6 +192,71 @@ class CommentUpdateView(mixins.UpdateModelMixin, GenericAPIView):
             service.perform()
         except ServiceException as e:
             logger.error(f'Cannot save Comment ID {instance.id}. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        return Response(serializer.data)
+
+
+class CriteriaCreateView(CreateAPIView):
+    serializer_class = CriteriaSerializer
+    queryset = Criteria.objects.select_related('goal', )
+
+    def get_queryset(self):
+        queryset = Goal.objects.select_related('review')
+
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        """
+        Create a new criteria.
+        """
+        serializer = self.get_serializer(data=request.data)
+        queryset = self.get_queryset()
+        goal = get_object_or_404(queryset, id=self.kwargs['goal_id'])
+
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on criteria save. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = CreateCriteriaService(
+            goal_id=goal.id,
+            **serializer.validated_data,
+        )
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot save criteria. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class CriteriaUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+    serializer_class = CriteriaSerializer
+    queryset = Criteria.objects.all()
+    lookup_url_kwarg = 'criteria_id'
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Criteria ID {instance.id} update. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = UpdateCriteriaService(instance, **serializer.validated_data)
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot save Criteria ID {instance.id}. Reason: {e}')
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(service.instance)
