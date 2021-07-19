@@ -85,6 +85,11 @@ class Employee(AbstractBaseUser, PermissionsMixin):
         # shortcut
         return self.get_full_name()
 
+    @property
+    def full_name_ru(self) -> str:
+        # shortcut
+        return self.get_full_name_ru()
+
     def get_full_name(self) -> str:
         return f'{self.first_name} {self.last_name}'
 
@@ -94,6 +99,10 @@ class Employee(AbstractBaseUser, PermissionsMixin):
             f'{f"{self.middle_name_ru} " if self.middle_name_ru else ""}'
             f'{self.last_name_ru}'
         )
+
+    @property
+    def current_review(self):
+        return self.review.order_by('-year').first()
 
 
 class Skill(models.Model):
