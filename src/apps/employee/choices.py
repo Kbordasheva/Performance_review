@@ -11,3 +11,15 @@ class Seniority(TextChoices):
     JUNIOR = 'junior', 'Junior'
     MIDDLE = 'middle', 'Middle'
     SENIOR = 'senior', 'Senior'
+
+
+class EmployeeRole(TextChoices):
+    EMPLOYEE = 'employee', 'Employee'
+    ROLES_MASTER = 'roles_master', 'Roles Master'
+    MANAGER = 'manager', 'Manager'
+
+    @classmethod
+    def manager_roles(cls) -> tuple:
+        return (
+            cls.MANAGER.value,
+        )

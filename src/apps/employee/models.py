@@ -1,14 +1,26 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin, UserManager
+from django.core import exceptions
 from django.db import models
 from django.db.models import EmailField
 from django.utils.translation import gettext_lazy as _
 
-from employee.choices import Gender, Seniority
+from employee.choices import Gender, Seniority, EmployeeRole
 
 
 class EmployeeManager(BaseUserManager):
-    def create_user(self, email, password=None, **kwargs):
+    def create_user(self, email, password):
+        try:
+            employee = self.model.objects.get(email=email)
+        except self.model.DoesNotExist:
+            raise exceptions.ValidationError('Employee does not exist.')
+
+        employee.set_password(password)
+        employee.save(using=self._db)
+        return employee
+
+    def _create_user(self, email, password=None, **kwargs):
+
         if not email:
             raise ValueError('The email field must be set')
         user = self.model(
@@ -20,7 +32,7 @@ class EmployeeManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None):
-        user = self.create_user(
+        user = self._create_user(
             email=email,
             password=password,
             is_staff=True,
@@ -68,6 +80,12 @@ class Employee(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    role = models.CharField(
+        _('Role'),
+        max_length=20,
+        choices=EmployeeRole.choices,
+        default=EmployeeRole.EMPLOYEE.value,
+    )
 
     USERNAME_FIELD = 'email'
 
@@ -99,6 +117,12 @@ class Employee(AbstractBaseUser, PermissionsMixin):
             f'{f"{self.middle_name_ru} " if self.middle_name_ru else ""}'
             f'{self.last_name_ru}'
         )
+
+    @property
+    def is_manager(self) -> bool:
+        """ Managers have more permissions.
+        """
+        return self.role in EmployeeRole.manager_roles()
 
     @property
     def current_review(self):
