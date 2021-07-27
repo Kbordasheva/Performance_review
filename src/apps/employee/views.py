@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 
 from core.exceptions import ServiceException
 from core.pagination import UnlimitedOffsetPagination
+from core.permissions import IsManagerOrReadOnly
 from employee.models import Employee, Skill
 from employee.serializers import (
     EmployeeSerializer,
@@ -21,6 +22,7 @@ from employee.services.create_employee_service import CreateEmployeeService
 from employee.services.save_employee_skills_service import SaveEmployeeSkillsService
 from employee.services.update_employee_service import SaveEmployeeService
 from performance_review.serializers import EmployeeProfileSerializer
+from unit.models import Unit
 
 logger = logging.getLogger('project')
 
@@ -57,8 +59,23 @@ class LogoutView(APIView):
 class EmployeesListCreateView(mixins.ListModelMixin,
                               mixins.CreateModelMixin,
                               GenericAPIView):
+    permission_classes = (
+        IsManagerOrReadOnly,
+    )
     serializer_class = EmployeeListSerializer
-    queryset = Employee.objects.filter(is_staff=False)
+
+    def get_queryset(self):
+        queryset = Employee.objects.select_related('unit')\
+            .filter(is_superuser=False, is_active=True)  # don't show superuser acc
+        if not self.request.user.is_manager:
+            # The employee can only see their profiles.
+            queryset = Employee.objects.filter(id=self.request.user.id)
+
+        elif self.request.user.is_manager:  # managers can see only their units employees
+            unit = Unit.objects.get(manager=self.request.user)
+            queryset = Employee.objects.filter(unit=unit)
+
+        return queryset
 
     ordering_fields = (
         ('id', 'id'),
@@ -104,12 +121,19 @@ class EmployeesListCreateView(mixins.ListModelMixin,
 
 
 class EmployeeView(GenericAPIView, mixins.RetrieveModelMixin):
+    permission_classes = (
+        IsManagerOrReadOnly,
+    )
     lookup_url_kwarg = 'employee_id'
     serializer_class = EmployeeSerializer
 
     def get_queryset(self):
         queryset = Employee.objects \
             .select_related('unit').prefetch_related('skills')
+
+        if not self.request.user.is_manager:
+            # The employee can only see their profiles.
+            queryset = Employee.objects.filter(id=self.request.user.id)
 
         return queryset
 
@@ -208,6 +232,10 @@ class EmployeeProfile(mixins.RetrieveModelMixin, GenericAPIView):
 
     def get_queryset(self):
         queryset = Employee.objects.select_related('unit').prefetch_related('skills')
+
+        if not self.request.user.is_manager:
+            # The employee can only see their profiles.
+            queryset = Employee.objects.filter(id=self.request.user.id)
 
         return queryset
 

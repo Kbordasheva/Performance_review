@@ -21,7 +21,8 @@ class EmployeeAdmin(admin.ModelAdmin):
               'is_staff',
               'is_active',
               'skills',
-              'unit'
+              'unit',
+              'role'
               )
 
 
