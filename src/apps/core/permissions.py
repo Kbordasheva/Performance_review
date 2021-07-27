@@ -14,4 +14,4 @@ class IsManagerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return request.user.is_manager
+        return request.user.is_manager or request.user.is_superuser

@@ -67,7 +67,7 @@ class EmployeesListCreateView(mixins.ListModelMixin,
     def get_queryset(self):
         queryset = Employee.objects.select_related('unit')\
             .filter(is_superuser=False, is_active=True)  # don't show superuser acc
-        if not self.request.user.is_manager:
+        if not self.request.user.is_manager and not self.request.user.is_staff:
             # The employee can only see their profiles.
             queryset = Employee.objects.filter(id=self.request.user.id)
 
@@ -98,6 +98,9 @@ class EmployeesListCreateView(mixins.ListModelMixin,
                 'first_name',
                 'last_name',
                 'email',
+                'gender',
+                'employment_date',
+                'unit_id'
             ),
         )
         if not serializer.is_valid():
@@ -131,7 +134,7 @@ class EmployeeView(GenericAPIView, mixins.RetrieveModelMixin):
         queryset = Employee.objects \
             .select_related('unit').prefetch_related('skills')
 
-        if not self.request.user.is_manager:
+        if not self.request.user.is_manager and not self.request.user.is_staff:
             # The employee can only see their profiles.
             queryset = Employee.objects.filter(id=self.request.user.id)
 
@@ -233,7 +236,7 @@ class EmployeeProfile(mixins.RetrieveModelMixin, GenericAPIView):
     def get_queryset(self):
         queryset = Employee.objects.select_related('unit').prefetch_related('skills')
 
-        if not self.request.user.is_manager:
+        if not self.request.user.is_manager and not self.request.user.is_staff:
             # The employee can only see their profiles.
             queryset = Employee.objects.filter(id=self.request.user.id)
 
