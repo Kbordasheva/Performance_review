@@ -29,6 +29,11 @@ class PerformanceReview(models.Model):
         null=True
     )
 
+    class Meta:
+        verbose_name = _('Performance Review')
+        verbose_name_plural = _('Performance Reviews')
+        ordering = ('-year',)
+
     def __str__(self) -> str:
         return f'PR of {self.employee.full_name} - {self.year}'
 
