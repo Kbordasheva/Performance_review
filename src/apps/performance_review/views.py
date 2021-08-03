@@ -1,16 +1,23 @@
 import logging
 
 from rest_framework import mixins, status
-from rest_framework.generics import GenericAPIView, CreateAPIView, get_object_or_404, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, CreateAPIView, get_object_or_404
 from rest_framework.response import Response
 
 from core.exceptions import ServiceException
 from performance_review.models import PerformanceReview, Goal, Comment, Criteria
-from performance_review.serializers import PerformanceReviewSerializer, PerformanceReviewDetailsSerializer, \
-    GoalSerializer, CommentSerializer, CriteriaSerializer
+from performance_review.serializers import (
+    PerformanceReviewSerializer,
+    PerformanceReviewDetailsSerializer,
+    GoalSerializer,
+    CommentSerializer,
+    CriteriaSerializer,
+    PerformanceReviewCreateSerializer,
+)
 from performance_review.services.create_comment_service import CreateCommentService
 from performance_review.services.create_criteria_service import CreateCriteriaService
 from performance_review.services.create_goal_service import CreateGoalService
+from performance_review.services.create_review_service import CreateReviewService
 from performance_review.services.update_comment_service import UpdateCommentService
 from performance_review.services.update_criteria_service import UpdateCriteriaService
 from performance_review.services.update_goal_service import UpdateGoalService
@@ -50,6 +57,28 @@ class PerformanceReviewListCreateView(mixins.ListModelMixin,
 
         serializer = self.get_serializer(queryset, fields=serializer_fields, many=True)
         return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = PerformanceReviewCreateSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Performance review create. '
+                f'Reason: {serializer.errors}'
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = CreateReviewService(**serializer.validated_data)
+
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot create Performance review. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class PerformanceReviewDetailsView(mixins.RetrieveModelMixin, GenericAPIView):

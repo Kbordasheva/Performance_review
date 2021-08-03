@@ -47,8 +47,14 @@ class PerformanceReviewSerializer(DynamicFieldsSerializer):
 class PerformanceReviewDetailsSerializer(DynamicFieldsSerializer):
     id = serializers.IntegerField(read_only=True)
     year = serializers.IntegerField(min_value=2000, max_value=2050)
-    goals = GoalSerializer(many=True)
+    goals = GoalSerializer(many=True, read_only=True)
 
 
 class EmployeeProfileSerializer(EmployeeSerializer):
     review = PerformanceReviewDetailsSerializer(many=True)
+
+
+class PerformanceReviewCreateSerializer(DynamicFieldsSerializer):
+    id = serializers.IntegerField(read_only=True)
+    employee_id = serializers.IntegerField()
+    year = serializers.IntegerField(min_value=2000, max_value=2050)

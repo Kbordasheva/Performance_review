@@ -5,7 +5,10 @@ from performance_review.views import (
     PerformanceReviewDetailsView,
     GoalCreateView,
     GoalUpdateView,
-    CommentCreateView, CommentUpdateView, CriteriaCreateView, CriteriaUpdateView,
+    CommentCreateView,
+    CommentUpdateView,
+    CriteriaCreateView,
+    CriteriaUpdateView,
 )
 
 urlpatterns = [
