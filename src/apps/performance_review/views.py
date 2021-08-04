@@ -78,7 +78,12 @@ class PerformanceReviewListCreateView(mixins.ListModelMixin,
 
         serializer = self.get_serializer(service.instance)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response({
+            "id": service.instance.id,
+            "year": service.instance.year,
+            "goals": []
+        },
+            status=status.HTTP_201_CREATED, headers=headers)
 
 
 class PerformanceReviewDetailsView(mixins.RetrieveModelMixin, GenericAPIView):
