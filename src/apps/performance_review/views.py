@@ -166,6 +166,25 @@ class GoalUpdateView(mixins.UpdateModelMixin, GenericAPIView):
         return Response(serializer.data)
 
 
+class GoalDeleteView(mixins.DestroyModelMixin, GenericAPIView):
+    serializer_class = GoalSerializer
+    queryset = Goal.objects.all()
+
+    def get_goal(self):
+        goal = get_object_or_404(
+            Goal.objects.filter(id=self.kwargs['goal_id'])
+        )
+        return goal
+
+    def delete(self, request, *args, **kwargs):
+        """ Delete Goal by its Id.
+        """
+        goal = self.get_goal()
+        goal.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class CommentCreateView(CreateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.select_related('author', )

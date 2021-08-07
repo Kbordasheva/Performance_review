@@ -54,6 +54,11 @@ class Goal(TimeStampedModel):
         ),
     )
 
+    class Meta:
+        verbose_name = _('Goal')
+        verbose_name_plural = _('Goals')
+        ordering = ('id', )
+
     def __str__(self) -> str:
         return f'Goal {self.id} of {self.review.employee.full_name} - {self.review.year}'
 
@@ -76,6 +81,11 @@ class Criteria(TimeStampedModel):
     start_date = models.DateField(_('Start Date'), null=True, blank=True)
     deadline = models.DateField(_('Deadline'), null=True, blank=True)
     finish_date = models.DateField(_('Finish Date'), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Criteria')
+        verbose_name_plural = _('Criterias')
+        ordering = ('id', )
 
     def __str__(self) -> str:
         return f'Criteria of goal id {self.goal.id} - ' \
