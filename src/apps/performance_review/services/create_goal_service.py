@@ -7,11 +7,9 @@ class CreateGoalService(BaseService):
             self,
             review_id,
             text,
-            is_done
     ):
         self.review_id = review_id
         self.text = text
-        self.is_done = is_done
 
     def perform(self):
         self.instance = self._create_goal()
@@ -22,6 +20,5 @@ class CreateGoalService(BaseService):
         goal = Goal.objects.create(
             review_id=self.review_id,
             text=self.text,
-            is_done=self.is_done
         )
         return goal
