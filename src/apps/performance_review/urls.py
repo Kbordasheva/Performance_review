@@ -9,7 +9,7 @@ from performance_review.views import (
     CommentUpdateView,
     CriteriaCreateView,
     CriteriaUpdateView,
-    GoalDeleteView,
+    GoalDeleteView, MarkGoalDoneView,
 )
 
 urlpatterns = [
@@ -19,6 +19,9 @@ urlpatterns = [
     path('<int:profile_id>/goals/<int:goal_id>/',
          GoalUpdateView.as_view(),
          name='goal'),
+    path('<int:profile_id>/goals/<int:goal_id>/done/',
+         MarkGoalDoneView.as_view(),
+         name='goal-done'),
     path('<int:profile_id>/goals/<int:goal_id>/delete/',
          GoalDeleteView.as_view(), name='delete-goal'),
     path('<int:profile_id>/goals/<int:goal_id>/comments/',

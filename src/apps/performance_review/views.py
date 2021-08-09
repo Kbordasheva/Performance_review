@@ -12,12 +12,13 @@ from performance_review.serializers import (
     GoalSerializer,
     CommentSerializer,
     CriteriaSerializer,
-    PerformanceReviewCreateSerializer,
+    PerformanceReviewCreateSerializer, GoalMarkDoneSerializer,
 )
 from performance_review.services.create_comment_service import CreateCommentService
 from performance_review.services.create_criteria_service import CreateCriteriaService
 from performance_review.services.create_goal_service import CreateGoalService
 from performance_review.services.create_review_service import CreateReviewService
+from performance_review.services.mark_goal_done_service import MarkGoalDoneService
 from performance_review.services.update_comment_service import UpdateCommentService
 from performance_review.services.update_criteria_service import UpdateCriteriaService
 from performance_review.services.update_goal_service import UpdateGoalService
@@ -160,6 +161,36 @@ class GoalUpdateView(mixins.UpdateModelMixin, GenericAPIView):
             service.perform()
         except ServiceException as e:
             logger.error(f'Cannot save Goal. Reason: {e}')
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(service.instance)
+        return Response(serializer.data)
+
+
+class MarkGoalDoneView(mixins.UpdateModelMixin, GenericAPIView):
+    serializer_class = GoalMarkDoneSerializer
+    queryset = Goal.objects.all()
+    lookup_url_kwarg = 'goal_id'
+    # ToDo Add permissions
+
+    def put(self, request, *args, **kwargs):
+        """Only a manager can mark a goal as done."""
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if not serializer.is_valid():
+            logger.error(
+                f'Validation error on Goal ID {instance.id} mark as done. '
+                f'Reason: {serializer.errors}'
+
+            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        service = MarkGoalDoneService(instance, **serializer.validated_data)
+
+        try:
+            service.perform()
+        except ServiceException as e:
+            logger.error(f'Cannot mark Goal as done. Reason: {e}')
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(service.instance)

@@ -40,7 +40,9 @@ class CustomAuthToken(ObtainAuthToken):
             'employee': {
                 'id': user.pk,
                 'name': user.full_name,
-                'email': user.email
+                'email': user.email,
+                'isAdmin': user.is_superuser,
+                'isManager': user.is_manager
             }
         })
 
