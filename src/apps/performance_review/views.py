@@ -171,6 +171,7 @@ class MarkGoalDoneView(mixins.UpdateModelMixin, GenericAPIView):
     serializer_class = GoalMarkDoneSerializer
     queryset = Goal.objects.all()
     lookup_url_kwarg = 'goal_id'
+    # ToDo Add permissions
 
     def put(self, request, *args, **kwargs):
         """Only a manager can mark a goal as done."""
