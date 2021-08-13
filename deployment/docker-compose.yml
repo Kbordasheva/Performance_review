@@ -1,0 +1,56 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: performance_user
+      POSTGRES_PASSWORD: performance_password
+      POSTGRES_DB: performance-review
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data/
+  app:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    image: backend
+    restart: unless-stopped
+    volumes:
+      - static_volume:/src/django_static
+    expose:
+      - 8000
+    env_file:
+      - ../.env
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ../../performance_review_front
+      dockerfile: Dockerfile
+      args:
+        - API_SERVER=ec2-16-170-40-45.eu-north-1.compute.amazonaws.com
+    restart: unless-stopped
+    expose:
+      - 3000
+    command: serve -s build -l 3000
+    depends_on:
+      - app
+
+  nginx:
+    build: ./nginx
+    restart: unless-stopped
+    volumes:
+      - static_volume:/django_static
+      - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app
+      - frontend
+
+volumes:
+  project-data:
+  static_volume:
