@@ -31,6 +31,6 @@ python manage.py migrate --no-input
 python manage.py collectstatic --no-input
 
 # Run gunicorn with 8 workers
-gunicorn src.wsgi:application --workers=8 --bind 0.0.0.0:8001 \
+gunicorn src.wsgi:application --workers=8 --bind 0.0.0.0:8000 \
   --access-logfile access.log --error-logfile error.log \
   --log-level=debug --capture-output
