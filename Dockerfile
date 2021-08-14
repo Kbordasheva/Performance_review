@@ -36,6 +36,6 @@ COPY docker-entrypoint.sh manage.py ./
 
 RUN chmod +x docker-entrypoint.sh
 
-EXPOSE 8001
+EXPOSE 8000
 
 CMD ["./docker-entrypoint.sh"]
