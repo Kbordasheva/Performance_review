@@ -30,7 +30,7 @@ services:
       context: ../../performance_review_front
       dockerfile: Dockerfile
       args:
-        - API_SERVER=ec2-16-170-40-45.eu-north-1.compute.amazonaws.com
+        - API_SERVER=performace-review.germanywestcentral.cloudapp.azure.com
     restart: unless-stopped
     expose:
       - 3000
