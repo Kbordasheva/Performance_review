@@ -41,6 +41,7 @@ class CustomAuthToken(ObtainAuthToken):
                 'id': user.pk,
                 'name': user.full_name,
                 'email': user.email,
+                'unit': user.unit.name if user.unit else "",
                 'isAdmin': user.is_superuser,
                 'isManager': user.is_manager
             }
