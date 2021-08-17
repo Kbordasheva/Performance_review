@@ -5,6 +5,7 @@ from rest_framework.generics import GenericAPIView, CreateAPIView, get_object_or
 from rest_framework.response import Response
 
 from core.exceptions import ServiceException
+from core.permissions import IsManagerOrReadOnly
 from performance_review.models import PerformanceReview, Goal, Comment, Criteria
 from performance_review.serializers import (
     PerformanceReviewSerializer,
@@ -171,7 +172,9 @@ class MarkGoalDoneView(mixins.UpdateModelMixin, GenericAPIView):
     serializer_class = GoalMarkDoneSerializer
     queryset = Goal.objects.all()
     lookup_url_kwarg = 'goal_id'
-    # ToDo Add permissions
+    permission_classes = (
+        IsManagerOrReadOnly,
+    )
 
     def put(self, request, *args, **kwargs):
         """Only a manager can mark a goal as done."""

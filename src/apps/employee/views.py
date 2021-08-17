@@ -75,7 +75,7 @@ class EmployeesListCreateView(mixins.ListModelMixin,
 
         elif self.request.user.is_manager:  # managers can see only their units employees
             unit = Unit.objects.get(manager=self.request.user)
-            queryset = Employee.objects.filter(unit=unit)
+            queryset = Employee.objects.filter(unit=unit, is_superuser=False, is_active=True)
 
         return queryset
 
@@ -139,6 +139,10 @@ class EmployeeView(GenericAPIView, mixins.RetrieveModelMixin):
         if not self.request.user.is_manager and not self.request.user.is_staff:
             # The employee can only see their profiles.
             queryset = Employee.objects.filter(id=self.request.user.id)
+
+        elif self.request.user.is_manager:  # managers can see only their units employees
+            unit = Unit.objects.get(manager=self.request.user)
+            queryset = Employee.objects.filter(unit=unit, is_superuser=False, is_active=True)
 
         return queryset
 
@@ -241,6 +245,10 @@ class EmployeeProfile(mixins.RetrieveModelMixin, GenericAPIView):
         if not self.request.user.is_manager and not self.request.user.is_staff:
             # The employee can only see their profiles.
             queryset = Employee.objects.filter(id=self.request.user.id)
+
+        elif self.request.user.is_manager:  # managers can see only their units employees
+            unit = Unit.objects.get(manager=self.request.user)
+            queryset = Employee.objects.filter(unit=unit, is_superuser=False, is_active=True)
 
         return queryset
 
